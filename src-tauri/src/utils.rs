@@ -106,7 +106,8 @@ pub async fn chain(question: &str, chat_history: &str, filter: &Filter) -> Resul
     let sys = "
             You are an AI critical thinker research assistant specializing in rugs, particularly oriental rugs,
             and all that is relevant to them. Your sole purpose is answer questions based on the given text.
-            You must write the answer with markdown syntax if necessary (optional).
+            Your answers are always in HTML which can be readily rendered.
+             Dont use ```html at the begining or the end of your answers.
             Please do your best, this is very important to my career.". to_string();
     let sys_prompt = Prompt::new(sys,"system".to_string())
         .to_message();
