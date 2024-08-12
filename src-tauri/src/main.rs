@@ -3,11 +3,9 @@
 
 mod database;
 mod utils;
-use std::error;
 use tauri::Manager;
-use crate::utils::{chain, generate_embedding_vector};
+use crate::utils::{chain, generate_embedding_vector, summarize_chat_history};
 use crate::database::{Filter, VectorMatch};
-// Learn more about Tauri commands at https://tauri.app/v1/guides/features/command
 
 #[tauri::command]
 async fn generate_response(question: String, chat_history: &str) -> Result<String, String> {
@@ -28,15 +26,16 @@ async fn generate_response(question: String, chat_history: &str) -> Result<Strin
     }
 }
 
-
-// #[tauri::command]
-// fn greet(name: &str) -> String {
-//     format!("Hello, {}! You've been greeted from Rust!", name)
-// }
-
+#[tauri::command]
+async fn summarizer(chat_history:String)->Result<String,String>{
+    match summarize_chat_history(&chat_history).await {
+        Ok(summary) => Ok(summary),
+        Err(_)=> Err("cant summarize this text".to_string()),
+    }
+}
 fn main() {
     tauri::Builder::default()
-        .invoke_handler(tauri::generate_handler![generate_response])
+        .invoke_handler(tauri::generate_handler![generate_response,summarizer])
         .run(tauri::generate_context!())
         .expect("error while running tauri application");
 }
