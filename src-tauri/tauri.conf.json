@@ -1,3 +1,4 @@
+
 {
   "build": {
     "beforeDevCommand": "",
@@ -22,7 +23,9 @@
       {
         "title": "loom-chat",
         "width": 800,
-        "height": 600
+        "height": 600,
+        "resizable": false,
+        "fullscreen": false
       }
     ],
     "security": {
