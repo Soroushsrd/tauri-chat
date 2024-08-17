@@ -11,13 +11,13 @@ use crate::database::{Filter, VectorMatch};
 async fn generate_response(question: String, chat_history: &str) -> Result<String, String> {
     let embedded_question = generate_embedding_vector(&question).await;
     let filter = Filter {
-        limit: 2,
+        limit: 5,
         offset: None,
         must: None,
         should: Some(vec![VectorMatch {
             vector: "text_embedding".to_string(),
             value: embedded_question,
-            threshold: 0.8
+            threshold: 0.6
         }])
     };
     match chain(&question, chat_history, &filter).await {
